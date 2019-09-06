@@ -5,6 +5,7 @@ const apiRouter = express.Router();
 
 const User = require('./model/user.js');
 const Article = require('./model/article.js');
+const article = new Article();
 const auth = require('./middleware/auth.js');
 const oauth = require('./oauth/google.js');
 
@@ -48,6 +49,27 @@ apiRouter.post('/article', auth('create'), (req, res, next) => {
       res.send(article);
     })
     .catch(next)
+})
+
+apiRouter.get('/public-stuff', (req, res, next) => {
+  // article.get()
+  //   .then(article => {
+  //     res.status(200);
+  //     res.send(article);
+  //   })
+  //   .catch(next)
+  res.send('public stuff')
+  console.log('public stuff')
+})
+
+apiRouter.get('/hidden-stuff', auth('read'), (req, res, next) => {
+  res.send('hidden stuff');
+  console.log('hidden stuff');
+})
+
+apiRouter.delete('/hidden-stuff', auth('delete'), (req, res, next) => {
+  res.send('deleted stuff');
+  console.log('deleted stuff');
 })
 
 module.exports = apiRouter;
